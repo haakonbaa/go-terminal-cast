@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import datetime
 import random
+import sys
 
 CONNECTIONS = set()
 
@@ -13,10 +14,18 @@ async def register(websocket):
         CONNECTIONS.remove(websocket)
 
 async def show_time():
-    while True:
-        message = datetime.datetime.utcnow().isoformat()
-        websockets.broadcast(CONNECTIONS, message)
-        await asyncio.sleep(random.random()*2+1)
+    try:
+        with open('ttyrecord','rb') as file:
+            while True:
+                byte = file.read(1)
+                if byte:
+                    print(byte)
+                    # message = datetime.datetime.utcnow().isoformat()
+                    # websockets.broadcast(CONNECTIONS, message)
+                    # await asyncio.sleep(random.random()*2+1)
+    except FileNotFoundError:
+        print('no recording found!',file=sys.stderr)
+
 
 
 async def main():
