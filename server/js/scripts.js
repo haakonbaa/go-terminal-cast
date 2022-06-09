@@ -8,7 +8,3 @@ socket.addEventListener('open', function (event) {
 socket.addEventListener('message', function (event) {
     console.log('Message from server: ', event.data)
 })
-
-function test() {
-    console.log("Hello World!");
-}

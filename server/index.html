@@ -17,9 +17,26 @@
 </head>
 
 <body>
-    <p>
-        Hello World!
-    </p>
+    <style>
+        @font-face { font-family: UbuntuR; src: url('Ubuntu-R.ttf'); } 
+        @font-face { font-family: UbuntuR; font-weight: bold; src: url('Ubuntu-R.ttf');}
+        html * {
+            font-family: UbuntuR, Arial;
+            font-size: 20px;
+        }
+        .terminal {
+            background-color: aqua;
+            width: 10*20px;
+        }
+        p {
+            width: 10*20px;
+        }
+    </style>
+    <div class="terminal">
+        <p>
+            Hello World!
+        </p>
+    </div>
     <script src="js/scripts.js"></script>
 </body>
 </html>
