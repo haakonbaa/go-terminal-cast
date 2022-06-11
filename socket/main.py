@@ -13,13 +13,28 @@ async def register(websocket):
     finally:
         CONNECTIONS.remove(websocket)
 
+async def readBytes(file, length) -> bytes:
+    data = b''
+    while True:
+        nb = file.read(1)
+        if not nb == b'':
+            data += nb
+            if len(data) == length:
+                return data
+
+
+async def readTTY(file, cb):
+    while True:
+        sec = int.from_bytes(await readBytes(file, 4), 'little')
+        usec = int.from_bytes(await readBytes(file, 4), 'little')
+        length = int.from_bytes(await readBytes(file, 4), 'little')
+        data = await readBytes(file, length)
+        cb(data.decode('utf-8'),sec, usec)
+
 async def show_time():
     try:
         with open('ttyrecord','rb') as file:
-            while True:
-                byte = file.read(1)
-                if byte:
-                    print(byte)
+            await readTTY(file, lambda x,y,z: print(x,end=''))
                     # message = datetime.datetime.utcnow().isoformat()
                     # websockets.broadcast(CONNECTIONS, message)
                     # await asyncio.sleep(random.random()*2+1)
