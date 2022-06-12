@@ -3,6 +3,7 @@ import websockets
 import datetime
 import random
 import sys
+import screen
 
 CONNECTIONS = set()
 
@@ -32,9 +33,10 @@ async def readTTY(file, cb):
         cb(data.decode('utf-8'),sec, usec)
 
 async def show_time():
+    term = screen.Terminal()
     try:
         with open('ttyrecord','rb') as file:
-            await readTTY(file, lambda x,y,z: print(x,end=''))
+            await readTTY(file, lambda x,y,z: term.print(x))
                     # message = datetime.datetime.utcnow().isoformat()
                     # websockets.broadcast(CONNECTIONS, message)
                     # await asyncio.sleep(random.random()*2+1)
